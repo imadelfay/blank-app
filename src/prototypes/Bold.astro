@@ -1,0 +1,147 @@
+---
+// Direction 1, "Bold": Crumbl-style. Full-bleed hero media, rounded shapes, a bright card grid.
+import { Image } from 'astro:assets';
+import { cookies } from '../data/cookies';
+import { site } from '../site';
+import flatlay from '../assets/lifestyle/full-lineup-flatlay.jpg';
+
+const orderLinks = site.orderLinks.filter((l) => l.url);
+---
+
+<div class="bold">
+  <header class="nav">
+    <a href="#bold-top" class="logo">BATCH</a>
+    <nav class="links" aria-label="Main">
+      <a href="#bold-cookies">Cookies</a>
+      <a href="#bold-order" class="pill pill--accent">Order now</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="bold-top">
+    <!-- Swap for the Higgsfield hero video once it is generated. -->
+    <Image src={flatlay} alt="" class="hero__media" widths={[900, 1400, 2000]} sizes="100vw" loading="eager" />
+    <div class="hero__copy">
+      <h1>Fresh cookies. Baked daily.</h1>
+      <p>Warm, gooey and delivered across Dubai and Abu Dhabi.</p>
+      <div class="hero__cta">
+        <a href="#bold-order" class="pill pill--light">Order now</a>
+        <a href="#bold-cookies" class="pill pill--ghost">See the cookies</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lineup" id="bold-cookies">
+    <h2>The lineup</h2>
+    <p class="lineup__intro">Ten flavours, baked fresh every day. Pick your favourite.</p>
+    <ul class="grid" role="list">
+      {
+        cookies.map((c) => (
+          <li class="card" style={`--tint: ${c.tint}`}>
+            <div class="card__photo">
+              <Image src={c.image} alt={c.name} width={640} height={640} fit="cover" position="center" />
+            </div>
+            <h3>{c.name}</h3>
+            <p>{c.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="order" id="bold-order">
+    <div class="order__panel">
+      <div>
+        <h2>Craving one?</h2>
+        <p>Order BATCH on your favourite app.</p>
+      </div>
+      <div class="order__buttons">
+        {orderLinks.map((l) => <a class="pill pill--onaccent" href={l.url} target="_blank" rel="noopener">{l.label}</a>)}
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span class="logo">BATCH</span>
+    <a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a>
+  </footer>
+</div>
+
+<style>
+  .bold {
+    --bg: #f4f3f1;
+    --ink: #141416;
+    --muted: #5d5b61;
+    --accent: #2d46d6;
+    --on-accent: #ffffff;
+    --r: 28px;
+    color-scheme: light;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+    padding: 0 clamp(12px, 2.5vw, 32px);
+  }
+  h1, h2, h3 { margin: 0; font-weight: 780; letter-spacing: -0.035em; line-height: 0.95; text-wrap: balance; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .logo { font-size: 1.75rem; font-weight: 820; letter-spacing: -0.05em; }
+  .links { display: flex; align-items: center; gap: 1.5rem; font-weight: 600; }
+
+  .pill {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 1.4rem;
+    border-radius: 999px; font-weight: 650; white-space: nowrap; transition: transform 160ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+  .pill:active { transform: scale(0.97); }
+  .pill--accent { background: var(--accent); color: var(--on-accent); min-height: 42px; }
+  .pill--light { background: #fff; color: var(--ink); }
+  .pill--ghost { color: #fff; box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.6); background: rgb(255 255 255 / 0.12); backdrop-filter: blur(8px); }
+  .pill--onaccent { background: var(--on-accent); color: var(--accent); min-width: 10rem; min-height: 56px; font-size: 1.125rem; }
+
+  .hero {
+    position: relative; display: flex; align-items: flex-end; min-height: min(calc(100svh - 88px), 860px);
+    border-radius: var(--r); overflow: hidden; isolation: isolate; background: #2a2019;
+  }
+  .hero__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; z-index: -2; }
+  .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgb(12 9 6 / 0.78), rgb(12 9 6 / 0.2) 50%, transparent 72%); }
+  .hero__copy { padding: clamp(1.5rem, 5vw, 4rem); color: #fff; max-width: 64rem; }
+  .hero h1 { font-size: clamp(3rem, 7.5vw, 6.5rem); animation: rise 700ms var(--ease-out) both; }
+  .hero p { margin-top: 1.25rem; font-size: clamp(1.0625rem, 1.6vw, 1.3rem); color: rgb(255 255 255 / 0.88); max-width: 32ch; animation: rise 700ms 90ms var(--ease-out) both; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; animation: rise 700ms 180ms var(--ease-out) both; }
+
+  .lineup { padding: clamp(4rem, 9vw, 7rem) 0; }
+  .lineup h2 { font-size: clamp(2.75rem, 6vw, 5rem); }
+  .lineup__intro { margin-top: 1rem; color: var(--muted); font-size: 1.1875rem; }
+  .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 1.5vw, 20px); margin: 3rem 0 0; padding: 0; list-style: none; }
+  .card { background: var(--tint); border-radius: var(--r); padding: 12px 12px 22px; }
+  .card__photo { border-radius: calc(var(--r) - 10px); overflow: hidden; aspect-ratio: 1; }
+  .card__photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--ease-out); }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) { .card:hover .card__photo img { transform: scale(1.06); } }
+  .card h3 { margin: 1rem 0.5rem 0; font-size: 1.375rem; }
+  .card p { margin: 0.5rem 0.5rem 0; font-size: 0.9375rem; line-height: 1.45; color: var(--muted); }
+
+  .order__panel {
+    display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: 2rem;
+    padding: clamp(2rem, 6vw, 5rem); border-radius: var(--r); background: var(--accent); color: var(--on-accent);
+  }
+  .order h2 { font-size: clamp(2.75rem, 7vw, 5.5rem); }
+  .order p { margin-top: 1rem; font-size: 1.1875rem; opacity: 0.88; }
+  .order__buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: flex-end; }
+
+  .foot { display: flex; justify-content: space-between; align-items: baseline; padding: 3rem 0 6rem; font-weight: 600; }
+  .foot .logo { font-size: clamp(2.5rem, 6vw, 4rem); }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+  @media (prefers-reduced-motion: reduce) { .hero h1, .hero p, .hero__cta { animation: none; } }
+
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card h3 { font-size: 1.125rem; }
+    .card p { font-size: 0.875rem; }
+    .order__panel { grid-template-columns: 1fr; }
+    .order__buttons { justify-content: stretch; }
+    .order__buttons .pill { flex: 1 1 9rem; }
+    .links a:not(.pill) { display: none; }
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+// Direction 4, "Spotlight": one cookie at a time. Picking a flavour swaps the photo and
+// re-tints the whole first screen, so the menu itself is the hero.
+import { Image } from 'astro:assets';
+import { cookies } from '../data/cookies';
+import { site } from '../site';
+import batchOfSix from '../assets/lifestyle/batch-of-6-flatlay.jpg';
+
+const orderLinks = site.orderLinks.filter((l) => l.url);
+const first = cookies[0]!;
+---
+
+<div class="spot" style={`--tint: ${first.tint}`}>
+  <header class="nav">
+    <a href="#spot-top" class="logo">BATCH</a>
+    <a href="#spot-order" class="btn btn--small">Order now</a>
+  </header>
+
+  <section class="stage" id="spot-top">
+    <div class="stage__copy">
+      <h1>Pick your cookie.</h1>
+      <p class="stage__sub">Ten flavours, baked fresh every day. Tap one to meet it.</p>
+      <div class="detail" aria-live="polite">
+        <h2 class="detail__name">{first.name}</h2>
+        <p class="detail__desc">{first.description}</p>
+      </div>
+      <a href="#spot-order" class="btn">Order now</a>
+    </div>
+    <div class="stage__photo">
+      {
+        cookies.map((c, i) => (
+          <Image
+            class:list={['stage__img', { 'is-active': i === 0 }]}
+            data-index={i}
+            src={c.image}
+            alt={c.name}
+            width={880}
+            height={880}
+            fit="cover"
+            position="center"
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+        ))
+      }
+    </div>
+    <div class="picker" role="group" aria-label="Choose a cookie">
+      {
+        cookies.map((c, i) => (
+          <button type="button" class="chip" aria-pressed={i === 0 ? 'true' : 'false'} data-index={i} data-name={c.name} data-desc={c.description} data-tint={c.tint}>
+            {c.name}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="band">
+    <Image src={batchOfSix} alt="Six BATCH cookies from above" class="band__img" widths={[900, 1400, 2000]} sizes="100vw" />
+    <div class="band__copy">
+      <h2>Can't pick one? Get a batch of six.</h2>
+      <a href="#spot-order" class="btn btn--light">Order now</a>
+    </div>
+  </section>
+
+  <section class="order" id="spot-order">
+    <h2>Order on your favourite app</h2>
+    <div class="order__buttons">
+      {orderLinks.map((l) => <a class="btn" href={l.url} target="_blank" rel="noopener">{l.label}</a>)}
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span class="logo">BATCH</span>
+    <a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.spot').forEach((root) => {
+    const chips = root.querySelectorAll<HTMLButtonElement>('.chip');
+    const imgs = root.querySelectorAll<HTMLElement>('.stage__img');
+    const name = root.querySelector('.detail__name');
+    const desc = root.querySelector('.detail__desc');
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        imgs.forEach((img) => img.classList.toggle('is-active', img.dataset.index === chip.dataset.index));
+        if (name) name.textContent = chip.dataset.name ?? '';
+        if (desc) desc.textContent = chip.dataset.desc ?? '';
+        root.style.setProperty('--tint', chip.dataset.tint ?? '');
+      }),
+    );
+  });
+</script>
+
+<style>
+  .spot {
+    --ink: #19191b;
+    --muted: color-mix(in srgb, var(--ink) 62%, var(--tint));
+    color-scheme: light;
+    background: var(--tint);
+    color: var(--ink);
+    font-family: 'Geist Variable', system-ui, sans-serif;
+    transition: background-color 450ms var(--ease-out);
+  }
+  h1, h2, .logo { font-family: 'Unbounded Variable', system-ui, sans-serif; margin: 0; letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; height: 72px; padding: 0 clamp(16px, 4vw, 48px); }
+  .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 1.6rem; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 600; white-space: nowrap; transition: transform 160ms var(--ease-out); }
+  .btn:active { transform: scale(0.97); }
+  .btn--small { min-height: 42px; padding: 0 1.2rem; font-size: 0.95rem; }
+  .btn--light { background: #fff; color: var(--ink); }
+
+  .stage { display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: 'copy photo' 'picker picker'; column-gap: clamp(2rem, 5vw, 5rem); row-gap: 2.5rem; align-items: center; padding: clamp(1rem, 3vw, 2.5rem) clamp(16px, 4vw, 48px) clamp(3rem, 6vw, 5rem); }
+  .stage__copy { grid-area: copy; }
+  .stage h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 650; }
+  .stage__sub { margin-top: 1rem; font-size: 1.125rem; color: var(--muted); max-width: 34ch; }
+  .detail { margin: clamp(2rem, 5vw, 3.5rem) 0 2rem; padding-left: 1.25rem; border-left: 3px solid var(--ink); }
+  .detail__name { font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 600; }
+  .detail__desc { margin-top: 0.5rem; max-width: 36ch; font-size: 1.0625rem; line-height: 1.5; }
+  .stage__photo { grid-area: photo; position: relative; aspect-ratio: 1; border-radius: 36px; overflow: hidden; background: #eceae8; }
+  .stage__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.04); transition: opacity 260ms var(--ease-out), transform 500ms var(--ease-out); }
+  .stage__img.is-active { opacity: 1; transform: none; }
+  .picker { grid-area: picker; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip { min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent); background: transparent; color: var(--ink); font: inherit; font-weight: 550; cursor: pointer; transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out); }
+  .chip:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
+  .chip:active { transform: scale(0.97); }
+  .chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .chip:focus-visible, .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+  .band { position: relative; display: flex; align-items: flex-end; min-height: 70svh; margin: 0 clamp(16px, 4vw, 48px); border-radius: 36px; overflow: hidden; isolation: isolate; }
+  .band__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; z-index: -2; }
+  .band::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgb(20 16 12 / 0.7), transparent 60%); }
+  .band__copy { padding: clamp(1.5rem, 5vw, 3.5rem); color: #fff; }
+  .band h2 { font-size: clamp(1.75rem, 4vw, 3.25rem); font-weight: 600; max-width: 18ch; margin-bottom: 1.5rem; }
+
+  .order { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; padding: clamp(4rem, 8vw, 6rem) clamp(16px, 4vw, 48px); }
+  .order h2 { font-size: clamp(1.75rem, 3.5vw, 3rem); font-weight: 600; max-width: 16ch; }
+  .order__buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .order__buttons .btn { min-width: 10rem; min-height: 56px; }
+
+  .foot { display: flex; justify-content: space-between; align-items: center; padding: 2rem clamp(16px, 4vw, 48px) 6rem; font-weight: 600; }
+
+  .stage__copy > *, .stage__photo { animation: enter 700ms var(--ease-out) both; }
+  .stage__photo { animation-delay: 120ms; }
+  @keyframes enter { from { opacity: 0; transform: translateY(16px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .spot, .stage__img { transition: none; }
+    .stage__copy > *, .stage__photo { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .stage { display: flex; flex-direction: column; align-items: stretch; gap: 1.25rem; }
+    .stage__copy { display: contents; }
+    .stage h1 { order: 1; }
+    .stage__sub { order: 2; margin-top: 0; }
+    .stage__photo { order: 3; }
+    .picker { order: 4; }
+    .detail { order: 5; }
+    .stage__copy > .btn { order: 6; align-self: flex-start; }
+    .picker { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; scrollbar-width: none; }
+    .picker::-webkit-scrollbar { display: none; }
+    .chip { flex: none; }
+    .detail { margin: 0.5rem 0 0.5rem; }
+    .order__buttons { width: 100%; }
+    .order__buttons .btn { flex: 1 1 9rem; }
+  }
+</style>

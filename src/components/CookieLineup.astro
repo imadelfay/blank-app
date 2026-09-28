@@ -7,25 +7,15 @@ import { cookies } from '../data/cookies';
   <div class="container">
     <header class="lineup__header" data-reveal>
       <h2 class="lineup__title">The lineup</h2>
-      <p class="lineup__intro">Four cookies, baked fresh every day. Pick your favourite.</p>
+      <p class="lineup__intro">Ten flavours, baked fresh every day. Pick your favourite.</p>
     </header>
 
     <ul class="lineup__grid" role="list">
       {
         cookies.map((cookie, i) => (
-          <li class="cookie" data-reveal style={`--reveal-index: ${i % 2}; --tint: var(--tint-${cookie.tint})`}>
+          <li class="cookie" data-reveal style={`--reveal-index: ${i % 2}; --tint: ${cookie.tint}`}>
             <div class="cookie__stage">
-              {cookie.image ? (
-                <Image
-                  src={cookie.image}
-                  alt={cookie.name}
-                  class="cookie__image"
-                  widths={[360, 540, 720]}
-                  sizes="(max-width: 768px) 70vw, 30vw"
-                />
-              ) : (
-                <div class="cookie__placeholder">Photo coming soon</div>
-              )}
+              <Image src={cookie.image} alt={cookie.name} class="cookie__image" width={720} height={720} fit="cover" position="center" />
             </div>
             <div class="cookie__body">
               <h3 class="cookie__name">{cookie.name}</h3>

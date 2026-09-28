@@ -12,10 +12,6 @@
   --color-accent: #2d46d6;
   --color-on-accent: #ffffff;
 
-  --tint-cocoa: #e7ddd6;
-  --tint-hazel: #eadfcf;
-  --tint-caramel: #f1e4cc;
-  --tint-pistachio: #dfe8d2;
 
   --font-sans: 'Bricolage Grotesque Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
@@ -35,11 +31,6 @@
     --color-muted: #a6a4ab;
     --color-accent: #7d8fff;
     --color-on-accent: #0f1030;
-
-    --tint-cocoa: #2a2320;
-    --tint-hazel: #2b2419;
-    --tint-caramel: #2e2616;
-    --tint-pistachio: #1f2619;
   }
 }
 

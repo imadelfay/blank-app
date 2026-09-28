@@ -1,0 +1,167 @@
+---
+// Direction 3, "Loud": personality-led. Dark chocolate background, huge condensed type,
+// the cookies' cheeky names as the hero of the menu, photos as tilted stickers.
+import { Image } from 'astro:assets';
+import { cookies } from '../data/cookies';
+import { site } from '../site';
+
+const orderLinks = site.orderLinks.filter((l) => l.url);
+const stickers = ['why-so-salty', 'the-girl-scout', 'bisc-please'].map((s) => cookies.find((c) => c.slug === s)!);
+---
+
+<div class="loud">
+  <header class="nav">
+    <a href="#loud-top" class="logo">BATCH</a>
+    <a href="#loud-order" class="btn btn--accent btn--small">Order now</a>
+  </header>
+
+  <section class="hero" id="loud-top">
+    <div class="hero__copy">
+      <h1>Seriously gooey.</h1>
+      <p>Cheeky flavours, baked fresh every day. Delivered across Dubai and Abu Dhabi.</p>
+      <a href="#loud-order" class="btn btn--accent">Order now</a>
+    </div>
+    <div class="stickers" aria-hidden="true">
+      {
+        stickers.map((c, i) => (
+          <div class={`sticker sticker--${i}`}>
+            <Image src={c.image} alt="" width={560} height={560} fit="cover" position="center" loading="eager" />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      {[0, 1].map(() => <span>{cookies.map((c) => `${c.name} / `).join('')}</span>)}
+    </div>
+  </div>
+
+  <section class="menu" id="loud-cookies">
+    <h2>The menu</h2>
+    <div class="menu__body">
+      <ol class="rows" role="list">
+        {
+          cookies.map((c, i) => (
+            <li>
+              <button type="button" class="row" data-index={i} aria-describedby={`loud-desc-${i}`}>
+                <Image class="row__thumb" src={c.image} alt="" width={160} height={160} fit="cover" position="center" />
+                <span class="row__name">{c.name}</span>
+                <span class="row__desc" id={`loud-desc-${i}`}>{c.description}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+      <figure class="preview" aria-hidden="true">
+        {
+          cookies.map((c, i) => (
+            <Image class:list={['preview__img', { 'is-active': i === 0 }]} data-index={i} src={c.image} alt="" width={720} height={720} fit="cover" position="center" />
+          ))
+        }
+      </figure>
+    </div>
+  </section>
+
+  <section class="order" id="loud-order">
+    <h2>Hungry?</h2>
+    <div class="order__buttons">
+      {orderLinks.map((l) => <a class="btn btn--dark" href={l.url} target="_blank" rel="noopener">{l.label}</a>)}
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span class="logo">BATCH</span>
+    <a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.loud').forEach((root) => {
+    const imgs = root.querySelectorAll<HTMLElement>('.preview__img');
+    const show = (i: string | undefined) => imgs.forEach((img) => img.classList.toggle('is-active', img.dataset.index === i));
+    root.querySelectorAll<HTMLElement>('.row').forEach((row) => {
+      row.addEventListener('mouseenter', () => show(row.dataset.index));
+      row.addEventListener('focus', () => show(row.dataset.index));
+    });
+  });
+</script>
+
+<style>
+  .loud {
+    --bg: #1e1512;
+    --ink: #f7efe5;
+    --muted: #b7a99d;
+    --accent: #ff6a2b;
+    color-scheme: dark;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geist Variable', system-ui, sans-serif;
+    overflow: hidden;
+  }
+  h1, h2, .row__name, .logo, .marquee { font-family: 'Anton', Impact, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.005em; }
+  h1, h2 { margin: 0; line-height: 0.88; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; height: 76px; padding: 0 clamp(16px, 4vw, 48px); }
+  .logo { font-size: 2rem; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 1.75rem; border-radius: 999px; font-weight: 650; font-size: 1.0625rem; white-space: nowrap; transition: transform 160ms var(--ease-out); }
+  .btn:active { transform: scale(0.97); }
+  .btn--accent { background: var(--accent); color: #1e1512; }
+  .btn--small { min-height: 42px; padding: 0 1.25rem; font-size: 0.95rem; }
+  .btn--dark { background: var(--bg); color: var(--accent); min-width: 10rem; }
+
+  .hero { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: 2rem; min-height: calc(100svh - 76px - 64px); padding: 0 clamp(16px, 4vw, 48px) 2rem; }
+  .hero h1 { font-size: clamp(4.5rem, 12.5vw, 12rem); color: var(--ink); animation: punch 600ms var(--ease-out) both; }
+  .hero p { margin: 1.75rem 0 2.25rem; max-width: 34ch; font-size: 1.1875rem; color: var(--muted); }
+  .stickers { position: relative; height: min(64svh, 600px); }
+  .sticker { position: absolute; width: 58%; aspect-ratio: 1; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px rgb(0 0 0 / 0.45); animation: drop 700ms var(--ease-out) both; transition: transform 300ms var(--ease-out); }
+  .sticker img { width: 100%; height: 100%; object-fit: cover; }
+  .sticker--0 { top: 0; left: 4%; --rot: -7deg; transform: rotate(var(--rot)); animation-delay: 80ms; }
+  .sticker--1 { top: 22%; right: 0; --rot: 6deg; transform: rotate(var(--rot)); animation-delay: 180ms; }
+  .sticker--2 { bottom: 0; left: 18%; --rot: -2deg; transform: rotate(var(--rot)); animation-delay: 280ms; }
+  @media (hover: hover) { .sticker:hover { transform: rotate(0deg) scale(1.03); z-index: 2; } }
+
+  .marquee { background: var(--accent); color: var(--bg); font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1; padding: 0.9rem 0; white-space: nowrap; transform: rotate(-1.5deg) scale(1.02); }
+  .marquee__track { display: inline-flex; animation: scroll 38s linear infinite; }
+  .marquee__track span { padding-right: 0.3em; }
+
+  .menu { padding: clamp(5rem, 10vw, 8rem) clamp(16px, 4vw, 48px); }
+  .menu h2 { font-size: clamp(3rem, 7vw, 6rem); color: var(--accent); }
+  .menu__body { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(2rem, 5vw, 5rem); margin-top: 2.5rem; }
+  .rows { margin: 0; padding: 0; list-style: none; }
+  .row { display: grid; grid-template-columns: 1fr; width: 100%; padding: 0.9rem 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .row__thumb { display: none; }
+  .row__name { font-size: clamp(2.25rem, 4.6vw, 4.25rem); line-height: 1; transition: color 160ms var(--ease-out), transform 250ms var(--ease-out); }
+  .row__desc { margin-top: 0.35rem; color: var(--muted); font-size: 0.95rem; }
+  .row:hover .row__name, .row:focus-visible .row__name { color: var(--accent); transform: translateX(10px); }
+  .row:focus-visible { outline: none; }
+  .preview { position: sticky; top: 96px; align-self: start; margin: 0; aspect-ratio: 1; border-radius: 24px; overflow: hidden; transform: rotate(2deg); }
+  .preview__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 220ms var(--ease-out); }
+  .preview__img.is-active { opacity: 1; }
+
+  .order { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 2rem; padding: clamp(3rem, 7vw, 6rem) clamp(16px, 4vw, 48px); background: var(--accent); color: var(--bg); }
+  .order h2 { font-size: clamp(4rem, 11vw, 10rem); }
+  .order__buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  .foot { display: flex; justify-content: space-between; align-items: center; padding: 2.5rem clamp(16px, 4vw, 48px) 6rem; color: var(--muted); font-weight: 600; }
+
+  @keyframes punch { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
+  @keyframes drop { from { opacity: 0; transform: translateY(-30px) rotate(calc(var(--rot) - 10deg)); } }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .hero h1, .sticker { animation: none; } .marquee__track { animation: none; } }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 1rem; }
+    .stickers { height: 78vw; }
+    .menu__body { grid-template-columns: 1fr; }
+    .preview { display: none; }
+    .row { grid-template-columns: 72px 1fr; column-gap: 1rem; align-items: center; }
+    .row__thumb { display: block; grid-row: span 2; width: 72px; height: 72px; border-radius: 12px; object-fit: cover; }
+    .row__name { font-size: 2rem; }
+    .order__buttons { width: 100%; }
+    .order__buttons .btn { flex: 1 1 9rem; }
+  }
+</style>
