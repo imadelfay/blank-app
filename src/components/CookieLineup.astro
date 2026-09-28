@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import { cookies } from '../data/cookies';
+---
+
+<section id="cookies" class="lineup">
+  <div class="container">
+    <header class="lineup__header" data-reveal>
+      <h2 class="lineup__title">The lineup</h2>
+      <p class="lineup__intro">Four cookies, baked fresh every day. Pick your favourite.</p>
+    </header>
+
+    <ul class="lineup__grid" role="list">
+      {
+        cookies.map((cookie, i) => (
+          <li class="cookie" data-reveal style={`--reveal-index: ${i % 2}; --tint: var(--tint-${cookie.tint})`}>
+            <div class="cookie__stage">
+              {cookie.image ? (
+                <Image
+                  src={cookie.image}
+                  alt={cookie.name}
+                  class="cookie__image"
+                  widths={[360, 540, 720]}
+                  sizes="(max-width: 768px) 70vw, 30vw"
+                />
+              ) : (
+                <div class="cookie__placeholder">Photo coming soon</div>
+              )}
+            </div>
+            <div class="cookie__body">
+              <h3 class="cookie__name">{cookie.name}</h3>
+              <p class="cookie__description">{cookie.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .lineup {
+    padding-block: var(--space-section);
+  }
+  .lineup__header {
+    max-width: 40rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .lineup__title {
+    font-size: clamp(2.75rem, 6vw, 5rem);
+  }
+  .lineup__intro {
+    margin-top: 1rem;
+    max-width: 48ch;
+    font-size: 1.1875rem;
+    color: var(--color-muted);
+  }
+  .lineup__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cookie {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    background: var(--tint);
+    overflow: hidden;
+  }
+  .cookie__stage {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+  .cookie__image {
+    width: min(78%, 420px);
+    height: auto;
+    filter: drop-shadow(0 24px 30px rgb(40 24 12 / 0.28));
+    transition: transform 600ms var(--ease-out);
+  }
+  /* A small spin on hover mirrors picking a cookie up. */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .cookie:hover .cookie__image {
+      transform: rotate(-10deg) scale(1.04);
+    }
+  }
+  .cookie__placeholder {
+    display: grid;
+    place-items: center;
+    width: min(62%, 320px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px dashed color-mix(in srgb, var(--color-text) 25%, transparent);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-align: center;
+  }
+  .cookie__body {
+    padding: 0 clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .cookie__name {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  .cookie__description {
+    margin-top: 0.625rem;
+    max-width: 36ch;
+    color: var(--color-muted);
+  }
+  @media (max-width: 767px) {
+    .lineup__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

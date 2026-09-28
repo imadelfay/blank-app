@@ -4,22 +4,55 @@ import { site } from '../site';
 
 <header class="header">
   <div class="container header__inner">
-    <a href="/" class="header__brand">{site.name}</a>
+    <a href="/" class="header__brand" aria-label={`${site.name} home`}>{site.name}</a>
+    <nav class="header__nav" aria-label="Main">
+      <a href="#cookies" class="header__link">Cookies</a>
+      <a href="#order" class="button button--accent header__cta">Order now</a>
+    </nav>
   </div>
 </header>
 
 <style>
   .header {
-    padding-block: 1.25rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
   }
   .header__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: var(--header-height);
   }
   .header__brand {
-    font-family: var(--font-display);
-    font-size: 1.375rem;
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
     text-decoration: none;
+  }
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .header__link {
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .header__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .header__cta {
+    min-height: 42px;
+    padding-inline: 1.25rem;
+  }
+  @media (max-width: 480px) {
+    .header__nav {
+      gap: 1rem;
+    }
   }
 </style>
