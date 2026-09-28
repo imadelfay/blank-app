@@ -1,0 +1,51 @@
+---
+import { site } from '../site';
+---
+
+<header class="header">
+  <a href="/" class="header__brand" aria-label={`${site.name} home`}>{site.name}</a>
+  <nav class="header__nav" aria-label="Main">
+    <a href="#cookies" class="header__link">Cookies</a>
+    <a href="#order" class="pill pill--accent header__cta">Order now</a>
+  </nav>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .header__brand {
+    font-size: 1.75rem;
+    font-weight: 820;
+    letter-spacing: -0.05em;
+  }
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-weight: 600;
+  }
+  .header__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .header__cta {
+    min-height: 42px;
+  }
+  @media (max-width: 480px) {
+    .header__link {
+      display: none;
+    }
+  }
+</style>

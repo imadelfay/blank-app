@@ -1,0 +1,36 @@
+---
+import { site } from '../site';
+---
+
+<footer class="footer">
+  <span class="footer__brand">{site.name}</span>
+  <div class="footer__links">
+    {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a>}
+    {site.social.tiktok && <a href={site.social.tiktok} target="_blank" rel="noopener">TikTok</a>}
+  </div>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding-block: 3rem;
+    font-weight: 600;
+  }
+  .footer__brand {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 820;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+  .footer__links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer__links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

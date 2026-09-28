@@ -1,0 +1,68 @@
+---
+import { site } from '../site';
+const orderLinks = site.orderLinks.filter((link) => link.url);
+---
+
+<section id="order" class="order">
+  <div>
+    <h2>Craving one?</h2>
+    <p>Order BATCH on your favourite app.</p>
+  </div>
+  <div class="order__buttons">
+    {
+      orderLinks.map((link) => (
+        <a class="pill order__button" href={link.url} target="_blank" rel="noopener">
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .order {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    align-items: end;
+    gap: 2rem;
+    padding: clamp(2rem, 6vw, 5rem);
+    border-radius: var(--radius);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  h2 {
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+  }
+  p {
+    margin-top: 1rem;
+    font-size: 1.1875rem;
+    opacity: 0.88;
+  }
+  .order__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+  .order__button {
+    min-width: 10rem;
+    min-height: 56px;
+    font-size: 1.125rem;
+    background: var(--color-on-accent);
+    color: var(--color-accent);
+  }
+  .order__button:hover {
+    transform: translateY(-2px);
+  }
+  @media (max-width: 760px) {
+    .order {
+      grid-template-columns: 1fr;
+    }
+    .order__buttons {
+      justify-content: stretch;
+    }
+    .order__button {
+      flex: 1 1 9rem;
+    }
+  }
+</style>
