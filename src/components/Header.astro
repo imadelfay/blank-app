@@ -3,10 +3,13 @@ import { site } from '../site';
 ---
 
 <header class="header">
-  <a href="/" class="header__brand" aria-label={`${site.name} home`}>{site.name}</a>
+  <a href="/" class="header__brand">
+    <span class="wordmark" aria-hidden="true"></span>
+    <span class="visually-hidden">{site.name} home</span>
+  </a>
   <nav class="header__nav" aria-label="Main">
     <a href="#cookies" class="header__link">Cookies</a>
-    <a href="#order" class="pill pill--accent header__cta">Order now</a>
+    <a href="#order" class="pill pill--cta header__cta">Order now</a>
   </nav>
 </header>
 
@@ -26,9 +29,7 @@ import { site } from '../site';
     -webkit-backdrop-filter: blur(14px);
   }
   .header__brand {
-    font-size: 1.75rem;
-    font-weight: 820;
-    letter-spacing: -0.05em;
+    width: clamp(96px, 10vw, 124px);
   }
   .header__nav {
     display: flex;
