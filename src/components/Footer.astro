@@ -1,50 +1,35 @@
 ---
 import { site } from '../site';
-const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="container footer__inner">
-    <p class="footer__brand">{site.name}</p>
-    <div class="footer__meta">
-      {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a>}
-      {site.social.tiktok && <a href={site.social.tiktok} target="_blank" rel="noopener">TikTok</a>}
-      <span>© {year} {site.name}</span>
-    </div>
+  <span class="footer__brand">{site.name}</span>
+  <div class="footer__links">
+    {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a>}
+    {site.social.tiktok && <a href={site.social.tiktok} target="_blank" rel="noopener">TikTok</a>}
   </div>
 </footer>
 
 <style>
   .footer {
-    padding-block: 2.5rem 3rem;
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
-  }
-  .footer__inner {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
     justify-content: space-between;
+    align-items: baseline;
     gap: 1.5rem;
+    padding-block: 3rem;
+    font-weight: 600;
   }
   .footer__brand {
     font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 800;
-    letter-spacing: -0.045em;
+    font-weight: 820;
+    letter-spacing: -0.05em;
     line-height: 1;
   }
-  .footer__meta {
+  .footer__links {
     display: flex;
-    flex-wrap: wrap;
     gap: 1.5rem;
-    color: var(--color-muted);
-    font-size: 0.9375rem;
   }
-  .footer__meta a {
-    font-weight: 600;
-    color: var(--color-text);
-    text-decoration: none;
-  }
-  .footer__meta a:hover {
+  .footer__links a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }

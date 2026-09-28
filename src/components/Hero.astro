@@ -1,43 +1,53 @@
 ---
+import { getImage } from 'astro:assets';
 import { site } from '../site';
-// Until site.hero.video is set (16:9 silent loop from Higgsfield), a placeholder backdrop shows.
-const { headline, subtext, video, poster } = site.hero;
+import flatlay from '../assets/lifestyle/full-lineup-flatlay.jpg';
+
+const { headline, subtext, video, videoMobile } = site.hero;
+// The still flat-lay doubles as the video poster and as the hero when no video is set.
+const poster = await getImage({ src: flatlay, width: 1600, format: 'webp' });
 ---
 
 <section class="hero">
-  <div class="container">
-    <div class="hero__frame">
-      {
-        video ? (
-          <video class="hero__media" autoplay muted loop playsinline preload="auto" poster={poster || undefined} aria-hidden="true">
-            <source src={video} type="video/mp4" />
-          </video>
-        ) : (
-          <div class="hero__media hero__media--placeholder" aria-hidden="true" />
-        )
-      }
-      <div class="hero__content">
-        <h1 class="hero__headline">{headline}</h1>
-        <p class="hero__subtext">{subtext}</p>
-        <div class="hero__actions">
-          <a href="#order" class="button hero__primary">Order now</a>
-          <a href="#cookies" class="button hero__secondary">See the cookies</a>
-        </div>
-      </div>
+  {
+    video ? (
+      <video class="hero__media" autoplay muted loop playsinline preload="metadata" poster={poster.src} aria-hidden="true">
+        {videoMobile && <source src={videoMobile} type="video/mp4" media="(max-width: 767px)" />}
+        <source src={video} type="video/mp4" />
+      </video>
+    ) : (
+      <img class="hero__media" src={poster.src} alt="" width={poster.attributes.width} height={poster.attributes.height} fetchpriority="high" />
+    )
+  }
+  <div class="hero__copy">
+    <h1>{headline}</h1>
+    <p>{subtext}</p>
+    <div class="hero__cta">
+      <a href="#order" class="pill hero__primary">Order now</a>
+      <a href="#cookies" class="pill hero__secondary">See the cookies</a>
     </div>
   </div>
 </section>
 
+<script>
+  // Respect reduced-motion settings: hold the video on its first frame.
+  const video = document.querySelector<HTMLVideoElement>('.hero__media');
+  if (video instanceof HTMLVideoElement && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    video.removeAttribute('autoplay');
+    video.pause();
+  }
+</script>
+
 <style>
-  .hero__frame {
+  .hero {
     position: relative;
     display: flex;
     align-items: flex-end;
-    min-height: min(calc(100svh - var(--header-height) - 1rem), 860px);
-    border-radius: var(--radius-lg);
+    min-height: min(calc(100svh - var(--header-height) - 16px), 860px);
+    border-radius: var(--radius);
     overflow: hidden;
     isolation: isolate;
-    background: #2a1d16;
+    background: #2a2019;
   }
   .hero__media {
     position: absolute;
@@ -45,64 +55,68 @@ const { headline, subtext, video, poster } = site.hero;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 62%;
     z-index: -2;
   }
-  .hero__media--placeholder {
-    background:
-      radial-gradient(circle at 72% 38%, #8a5a36 0, transparent 38%),
-      radial-gradient(circle at 30% 80%, #4a3021 0, transparent 45%),
-      #2a1d16;
-  }
-  /* Scrim keeps the white text readable over any video frame. */
-  .hero__frame::after {
+  /* Scrim keeps the white text readable over any frame of the video. */
+  .hero::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(to top, rgb(10 8 6 / 0.72) 0%, rgb(10 8 6 / 0.25) 45%, transparent 70%);
+    background: linear-gradient(to top, rgb(12 9 6 / 0.78), rgb(12 9 6 / 0.2) 50%, transparent 72%);
   }
-  .hero__content {
-    width: 100%;
+  .hero__copy {
     max-width: 64rem;
     padding: clamp(1.5rem, 5vw, 4rem);
-    color: #ffffff;
+    color: #fff;
   }
-  .hero__headline {
+  h1 {
     font-size: clamp(3rem, 7.5vw, 6.5rem);
-    line-height: 0.92;
+    animation: rise 700ms var(--ease-out) both;
   }
-  .hero__subtext {
+  p {
     max-width: 32ch;
     margin-top: 1.25rem;
-    font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
-    color: rgb(255 255 255 / 0.86);
+    font-size: clamp(1.0625rem, 1.6vw, 1.3rem);
+    color: rgb(255 255 255 / 0.88);
+    animation: rise 700ms 90ms var(--ease-out) both;
   }
-  .hero__actions {
+  .hero__cta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: 2rem;
+    animation: rise 700ms 180ms var(--ease-out) both;
   }
   .hero__primary {
-    background: #ffffff;
-    color: #131316;
+    background: #fff;
+    color: #141416;
   }
   .hero__primary:hover {
     background: #ecebe7;
   }
   .hero__secondary {
-    background: rgb(255 255 255 / 0.14);
-    color: #ffffff;
-    box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.55);
+    color: #fff;
+    background: rgb(255 255 255 / 0.12);
+    box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.6);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
   .hero__secondary:hover {
-    background: rgb(255 255 255 / 0.24);
+    background: rgb(255 255 255 / 0.22);
   }
-  @media (max-width: 640px) {
-    .hero__frame {
-      min-height: min(calc(100svh - var(--header-height) - 1rem), 720px);
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    h1,
+    p,
+    .hero__cta {
+      animation: none;
     }
   }
 </style>

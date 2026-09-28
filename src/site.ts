@@ -6,9 +6,10 @@ export const site = {
   hero: {
     headline: 'Fresh cookies. Baked daily.',
     subtext: 'Warm, gooey and delivered across Dubai and Abu Dhabi.',
-    // Files in public/media/. Leave empty until the Higgsfield hero video is ready.
+    // MP4 files in public/media/ (e.g. '/media/hero.mp4'). Until set, the hero shows the still flat-lay photo.
     video: '',
-    poster: '',
+    // Optional portrait (9:16) cut for phones.
+    videoMobile: '',
   },
   // Where the order buttons send people. Leave a URL empty to hide that button.
   orderLinks: [

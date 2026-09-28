@@ -4,49 +4,41 @@ const orderLinks = site.orderLinks.filter((link) => link.url);
 ---
 
 <section id="order" class="order">
-  <div class="container">
-    <div class="order__panel" data-reveal>
-      <div>
-        <h2 class="order__title">Craving one?</h2>
-        <p class="order__text">Order BATCH on your favourite app. Delivered across Dubai and Abu Dhabi.</p>
-      </div>
-      <div class="order__actions">
-        {
-          orderLinks.map((link) => (
-            <a class="button order__button" href={link.url} target="_blank" rel="noopener">
-              {link.label}
-            </a>
-          ))
-        }
-      </div>
-    </div>
+  <div>
+    <h2>Craving one?</h2>
+    <p>Order BATCH on your favourite app.</p>
+  </div>
+  <div class="order__buttons">
+    {
+      orderLinks.map((link) => (
+        <a class="pill order__button" href={link.url} target="_blank" rel="noopener">
+          {link.label}
+        </a>
+      ))
+    }
   </div>
 </section>
 
 <style>
   .order {
-    padding-bottom: var(--space-section);
-  }
-  .order__panel {
     display: grid;
-    gap: 2rem;
+    grid-template-columns: 1.4fr 1fr;
     align-items: end;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 2rem;
     padding: clamp(2rem, 6vw, 5rem);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius);
     background: var(--color-accent);
     color: var(--color-on-accent);
   }
-  .order__title {
+  h2 {
     font-size: clamp(2.75rem, 7vw, 5.5rem);
   }
-  .order__text {
-    max-width: 34ch;
+  p {
     margin-top: 1rem;
     font-size: 1.1875rem;
     opacity: 0.88;
   }
-  .order__actions {
+  .order__buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
@@ -55,22 +47,22 @@ const orderLinks = site.orderLinks.filter((link) => link.url);
   .order__button {
     min-width: 10rem;
     min-height: 56px;
+    font-size: 1.125rem;
     background: var(--color-on-accent);
     color: var(--color-accent);
-    font-size: 1.125rem;
   }
   .order__button:hover {
     transform: translateY(-2px);
   }
-  @media (max-width: 767px) {
-    .order__panel {
+  @media (max-width: 760px) {
+    .order {
       grid-template-columns: 1fr;
     }
-    .order__actions {
-      justify-content: flex-start;
+    .order__buttons {
+      justify-content: stretch;
     }
     .order__button {
-      flex: 1 1 10rem;
+      flex: 1 1 9rem;
     }
   }
 </style>
