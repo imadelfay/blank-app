@@ -9,7 +9,7 @@ import { cookies } from '../data/cookies';
   <ul class="grid" role="list">
     {
       cookies.map((c) => (
-        <li class="card" style={`--tint: ${c.tint}`}>
+        <li class="card" id={c.slug} style={`--tint: ${c.tint}`}>
           <div class="card__photo">
             <Image src={c.image} alt={c.name} width={640} height={640} fit="cover" position="center" />
           </div>
@@ -42,10 +42,16 @@ import { cookies } from '../data/cookies';
     list-style: none;
   }
   .card {
+    scroll-margin-top: calc(var(--header-height) + 16px);
     padding: 12px 12px 22px;
     border-radius: var(--radius);
     background: var(--tint);
     color: var(--color-card-text);
+  }
+  /* Arriving from the hero label highlights the cookie. */
+  .card:target {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 4px;
   }
   .card__photo {
     aspect-ratio: 1;

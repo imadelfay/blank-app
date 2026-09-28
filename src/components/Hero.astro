@@ -1,32 +1,48 @@
 ---
+import { existsSync } from 'node:fs';
 import { getImage } from 'astro:assets';
 import { site } from '../site';
+import { cookies } from '../data/cookies';
 import flatlay from '../assets/lifestyle/full-lineup-flatlay.jpg';
 
 const { headline, subtext, videos } = site.hero;
-// The still flat-lay doubles as the video poster and as the hero when no video is set.
-const poster = await getImage({ src: flatlay, width: 1600, format: 'webp' });
+// The still flat-lay is the hero when no clip is listed.
+const still = await getImage({ src: flatlay, width: 1600, format: 'webp' });
+
+// Clips whose file hasn't been added to public/ yet are skipped, so the page never shows a broken video.
+const available = videos.filter((v) => existsSync(new URL(`../../public${v.src}`, import.meta.url)));
+const clips = await Promise.all(
+  available.map(async (v) => {
+    const cookie = cookies.find((c) => c.slug === v.cookie);
+    const thumb = cookie ? await getImage({ src: cookie.image, width: 96, height: 96, fit: 'cover', position: 'center', format: 'webp' }) : undefined;
+    return { ...v, name: cookie?.name ?? '', thumb: thumb?.src };
+  }),
+);
+const first = clips[0];
 ---
 
 <section class="hero">
   {
-    videos.length > 0 ? (
+    first ? (
       <div class="hero__media" data-hero-videos aria-hidden="true">
-        {videos.map((src, i) => (
+        {clips.map((clip, i) => (
           <video
             class:list={['hero__clip', { 'is-active': i === 0 }]}
-            src={src}
+            src={clip.src}
+            poster={clip.poster}
             muted
             playsinline
             autoplay={i === 0}
-            loop={videos.length === 1}
+            loop={clips.length === 1}
             preload={i === 0 ? 'auto' : 'metadata'}
-            poster={i === 0 ? poster.src : undefined}
+            data-cookie={clip.cookie}
+            data-name={clip.name}
+            data-thumb={clip.thumb}
           />
         ))}
       </div>
     ) : (
-      <img class="hero__media" src={poster.src} alt="" width={poster.attributes.width} height={poster.attributes.height} fetchpriority="high" />
+      <img class="hero__media" src={still.src} alt="" width={still.attributes.width} height={still.attributes.height} fetchpriority="high" />
     )
   }
   <div class="hero__copy">
@@ -37,11 +53,36 @@ const poster = await getImage({ src: flatlay, width: 1600, format: 'webp' });
       <a href="#cookies" class="pill hero__secondary">See the cookies</a>
     </div>
   </div>
+  {
+    first?.name && (
+      <a class="hero__label" href={`#${first.cookie}`} data-hero-label>
+        {first.thumb && <img class="hero__label-thumb" src={first.thumb} alt="" width="36" height="36" />}
+        <span class="hero__label-text">
+          <span class="hero__label-kicker">On screen</span>
+          <span class="hero__label-name">{first.name}</span>
+        </span>
+        <span class="hero__label-arrow" aria-hidden="true">&darr;</span>
+      </a>
+    )
+  }
 </section>
 
 <script>
   const stage = document.querySelector<HTMLElement>('[data-hero-videos]');
   const clips = stage ? [...stage.querySelectorAll<HTMLVideoElement>('video')] : [];
+  const label = document.querySelector<HTMLAnchorElement>('[data-hero-label]');
+
+  function showLabel(clip: HTMLVideoElement) {
+    if (!label) return;
+    label.classList.add('is-swapping');
+    window.setTimeout(() => {
+      label.href = `#${clip.dataset.cookie}`;
+      label.querySelector('.hero__label-name')!.textContent = clip.dataset.name ?? '';
+      const thumb = label.querySelector<HTMLImageElement>('.hero__label-thumb');
+      if (thumb && clip.dataset.thumb) thumb.src = clip.dataset.thumb;
+      label.classList.remove('is-swapping');
+    }, 180);
+  }
 
   if (clips.length > 0) {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -55,10 +96,11 @@ const poster = await getImage({ src: flatlay, width: 1600, format: 'webp' });
         clip.addEventListener('ended', () => {
           const next = clips[(current + 1) % clips.length]!;
           next.currentTime = 0;
-          void next.play();
+          next.play().catch(() => {});
           next.classList.add('is-active');
           clip.classList.remove('is-active');
           current = clips.indexOf(next);
+          showLabel(next);
           // Start buffering the clip after this one.
           clips[(current + 1) % clips.length]!.preload = 'auto';
         }),
@@ -147,6 +189,68 @@ const poster = await getImage({ src: flatlay, width: 1600, format: 'webp' });
   .hero__secondary:hover {
     background: rgb(255 255 255 / 0.22);
   }
+
+  /* Names the cookie on screen and jumps to its card. */
+  .hero__label {
+    position: absolute;
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 6px 16px 6px 6px;
+    border-radius: 999px;
+    background: rgb(20 16 12 / 0.42);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18);
+    backdrop-filter: blur(12px) saturate(1.3);
+    -webkit-backdrop-filter: blur(12px) saturate(1.3);
+    color: #fff;
+    line-height: 1.15;
+    transition: background-color 160ms var(--ease-out);
+    animation: rise 700ms 300ms var(--ease-out) both;
+  }
+  .hero__label:hover {
+    background: rgb(20 16 12 / 0.6);
+  }
+  .hero__label-thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .hero__label-text {
+    display: grid;
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+  .hero__label.is-swapping .hero__label-text,
+  .hero__label.is-swapping .hero__label-thumb {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  .hero__label-thumb {
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+  .hero__label-kicker {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.7);
+  }
+  .hero__label-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .hero__label-arrow {
+    margin-left: 0.25rem;
+    font-size: 0.95rem;
+    opacity: 0.8;
+  }
+
   @keyframes rise {
     from {
       opacity: 0;
@@ -156,11 +260,21 @@ const poster = await getImage({ src: flatlay, width: 1600, format: 'webp' });
   @media (prefers-reduced-motion: reduce) {
     h1,
     p,
-    .hero__cta {
+    .hero__cta,
+    .hero__label {
       animation: none;
     }
-    .hero__clip {
+    .hero__clip,
+    .hero__label-text,
+    .hero__label-thumb {
       transition: none;
+    }
+  }
+  /* On phones the headline fills the bottom, so the label moves to the top corner. */
+  @media (max-width: 760px) {
+    .hero__label {
+      top: 1rem;
+      bottom: auto;
     }
   }
 </style>

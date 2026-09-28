@@ -6,9 +6,13 @@ export const site = {
   hero: {
     headline: 'Fresh cookies. Baked daily.',
     subtext: 'Warm, gooey and delivered across Dubai and Abu Dhabi.',
-    // Hero clips, played in turn with a crossfade. MP4 files in public/media/ (e.g. '/media/hero-caramel.mp4').
-    // Until at least one is set, the hero shows the still flat-lay photo.
-    videos: [] as string[],
+    // Hero clips, played in turn with a crossfade. Files live in public/media/.
+    // `poster` is the clip's first frame; `cookie` is the slug of the cookie it shows (for the corner label).
+    // Until at least one clip is listed, the hero shows the still flat-lay photo.
+    videos: [
+      { src: '/media/hero-why-so-salty.mp4', poster: '/media/hero-why-so-salty.jpg', cookie: 'why-so-salty' },
+      { src: '/media/hero-bisc-please.mp4', poster: '/media/hero-bisc-please.jpg', cookie: 'bisc-please' },
+    ] as { src: string; poster: string; cookie: string }[],
   },
   // Where the order buttons send people. Leave a URL empty to hide that button.
   orderLinks: [
