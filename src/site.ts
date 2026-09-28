@@ -6,10 +6,9 @@ export const site = {
   hero: {
     headline: 'Fresh cookies. Baked daily.',
     subtext: 'Warm, gooey and delivered across Dubai and Abu Dhabi.',
-    // MP4 files in public/media/ (e.g. '/media/hero.mp4'). Until set, the hero shows the still flat-lay photo.
-    video: '',
-    // Optional portrait (9:16) cut for phones.
-    videoMobile: '',
+    // Hero clips, played in turn with a crossfade. MP4 files in public/media/ (e.g. '/media/hero-caramel.mp4').
+    // Until at least one is set, the hero shows the still flat-lay photo.
+    videos: [] as string[],
   },
   // Where the order buttons send people. Leave a URL empty to hide that button.
   orderLinks: [
