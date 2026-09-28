@@ -13,6 +13,8 @@ interface Props {
 const { title, description = site.description } = Astro.props;
 const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | Fresh cookies, baked daily`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Link previews (WhatsApp, Instagram, iMessage) use the caramel hero frame.
+const shareImage = new URL('/media/hero-why-so-salty.jpg', Astro.site);
 ---
 
 <!doctype html>
@@ -32,6 +34,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="893" />
+    <meta name="twitter:image" content={shareImage} />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
