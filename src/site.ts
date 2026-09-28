@@ -1,16 +1,17 @@
-// Single source of truth for brand details. Swap these once the content arrives.
+// Single source of truth for brand details.
 export const site = {
-  name: 'Brand Name',
-  tagline: 'A short line that says what the brand is.',
-  description: 'One or two sentences used for search results and social previews.',
+  name: 'BATCH',
+  tagline: 'The Cookie Collective. Freshly baked every day, delivered across Dubai and Abu Dhabi.',
+  description:
+    'BATCH is a UAE cookie brand baking fresh every day: classic chocolate chip, Nutella sea salt, Lotus and pistachio kunafa cookies, delivered in Dubai and Abu Dhabi.',
   // Where "Order now" buttons send people. Leave a URL empty to hide that button.
   orderLinks: [
-    { label: 'Talabat', url: '' },
-    { label: 'Deliveroo', url: '' },
+    { label: 'Talabat', url: 'https://www.talabat.com/uae/batch-cookies' },
+    { label: 'Deliveroo', url: 'https://deliveroo.ae/menu/Dubai/al-barsha-3/batch-cookies-hessa-st' },
     { label: 'Careem', url: '' },
   ],
   social: {
-    instagram: '',
+    instagram: 'https://www.instagram.com/batch.uae/',
     tiktok: '',
   },
 };
