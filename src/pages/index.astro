@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site';
+
+const orderLinks = site.orderLinks.filter((link) => link.url);
+---
+
+<Base>
+  <section class="hero">
+    <div class="container">
+      <h1>{site.name}</h1>
+      <p class="hero__tagline">{site.tagline}</p>
+      {
+        orderLinks.length > 0 && (
+          <div class="hero__actions">
+            {orderLinks.map((link) => (
+              <a class="button" href={link.url} target="_blank" rel="noopener">
+                Order on {link.label}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: var(--space-section);
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 9vw, 7.5rem);
+  }
+  .hero__tagline {
+    max-width: 36ch;
+    margin-top: 1.5rem;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    color: var(--color-muted);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+  .button {
+    display: inline-block;
+    padding: 0.875rem 1.5rem;
+    border-radius: 999px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    text-decoration: none;
+    font-weight: 500;
+  }
+</style>
