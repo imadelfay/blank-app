@@ -1,5 +1,6 @@
 ---
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { getImage } from 'astro:assets';
 import { site } from '../site';
 import { cookies } from '../data/cookies';
@@ -10,7 +11,7 @@ const { headline, subtext, videos } = site.hero;
 const still = await getImage({ src: flatlay, width: 1600, format: 'webp' });
 
 // Clips whose file hasn't been added to public/ yet are skipped, so the page never shows a broken video.
-const available = videos.filter((v) => existsSync(new URL(`../../public${v.src}`, import.meta.url)));
+const available = videos.filter((v) => existsSync(join(process.cwd(), 'public', v.src)));
 const clips = await Promise.all(
   available.map(async (v) => {
     const cookie = cookies.find((c) => c.slug === v.cookie);
@@ -140,6 +141,14 @@ const first = clips[0];
   }
   .hero__clip.is-active {
     opacity: 1;
+  }
+  /* On wide screens, enlarge the clips and shift them right so the cookie sits beside the headline. */
+  @media (min-width: 900px) {
+    .hero__clip {
+      left: 0;
+      width: 135%;
+      max-width: none;
+    }
   }
   /* Scrim keeps the white text readable over any frame of the video. */
   .hero::after {
