@@ -22,6 +22,21 @@ import brownieXNutella from '../assets/cookies/brownie-x-nutella.jpg';
 import islandTime from '../assets/cookies/island-time.jpg';
 import prettyInPink from '../assets/cookies/pretty-in-pink.jpg';
 import jamSession from '../assets/cookies/jam-session.jpg';
+import topShesAClassic from '../assets/cookies/top/shes-a-classic.jpg';
+import topWhySoSalty from '../assets/cookies/top/why-so-salty.jpg';
+import topCremeDeLaCreme from '../assets/cookies/top/creme-de-la-creme.jpg';
+import topCakeByTheOcean from '../assets/cookies/top/cake-by-the-ocean.jpg';
+import topChurroPlease from '../assets/cookies/top/churro-please.jpg';
+import topCrumble from '../assets/cookies/top/crumble.jpg';
+import topSpreadableLove from '../assets/cookies/top/spreadable-love.jpg';
+import topTheBatman from '../assets/cookies/top/the-batman.jpg';
+import topBlackAndBougie from '../assets/cookies/top/black-and-bougie.jpg';
+import topTripleThreat from '../assets/cookies/top/triple-threat.jpg';
+import topKinderEra from '../assets/cookies/top/kinder-era.jpg';
+import topBrownieXNutella from '../assets/cookies/top/brownie-x-nutella.jpg';
+import topIslandTime from '../assets/cookies/top/island-time.jpg';
+import topPrettyInPink from '../assets/cookies/top/pretty-in-pink.jpg';
+import topJamSession from '../assets/cookies/top/jam-session.jpg';
 
 export interface Cookie {
   slug: string;
@@ -44,6 +59,7 @@ export const cookies: Cookie[] = [
     name: "She's a Classic",
     description: 'Slow-baked chocolate chip with big, melty chocolate buttons.',
     image: shesAClassic,
+    topImage: topShesAClassic,
   },
   {
     slug: 'kind-of-nuts',
@@ -68,6 +84,7 @@ export const cookies: Cookie[] = [
     name: 'Why So Salty?',
     description: 'Oozing salted caramel centre, caramel drizzle and sea salt.',
     image: whySoSalty,
+    topImage: topWhySoSalty,
   },
   {
     slug: 'the-girl-scout',
@@ -98,12 +115,14 @@ export const cookies: Cookie[] = [
     name: 'Crème de la Crème',
     description: 'Crème brûlée on a cookie, with a torched, crackly sugar top.',
     image: cremeDeLaCreme,
+    topImage: topCremeDeLaCreme,
   },
   {
     slug: 'cake-by-the-ocean',
     name: 'Cake by the Ocean',
     description: 'Slow-baked cookie dough with a gooey Nutella filling and a sprinkle of sea salt.',
     image: cakeByTheOcean,
+    topImage: topCakeByTheOcean,
     isNew: true,
   },
   {
@@ -111,6 +130,7 @@ export const cookies: Cookie[] = [
     name: 'Churro, Please',
     description: 'Cinnamon-sugar cookie with a cheesecake centre and a coffee caramel drizzle.',
     image: churroPlease,
+    topImage: topChurroPlease,
     isNew: true,
   },
   {
@@ -118,6 +138,7 @@ export const cookies: Cookie[] = [
     name: 'Crumble',
     description: 'Soft cookie with a cheesecake filling under a buttery biscuit crumble.',
     image: crumble,
+    topImage: topCrumble,
     isNew: true,
   },
   {
@@ -125,6 +146,7 @@ export const cookies: Cookie[] = [
     name: 'Spreadable Love',
     description: 'Thick, golden cookie with a molten Nutella centre and flaky sea salt.',
     image: spreadableLove,
+    topImage: topSpreadableLove,
     isNew: true,
   },
   {
@@ -132,6 +154,7 @@ export const cookies: Cookie[] = [
     name: 'The Batman',
     description: 'Half light, half dark: white and dark chocolate baked into one rich dough.',
     image: theBatman,
+    topImage: topTheBatman,
     isNew: true,
   },
   {
@@ -139,6 +162,7 @@ export const cookies: Cookie[] = [
     name: 'Black & Bougie',
     description: 'Double chocolate dough, creamy milk chocolate chips and everything chocolate.',
     image: blackAndBougie,
+    topImage: topBlackAndBougie,
     isNew: true,
   },
   {
@@ -146,6 +170,7 @@ export const cookies: Cookie[] = [
     name: 'Triple Threat',
     description: 'Triple chocolate cookie with a peanut and chocolate filling.',
     image: tripleThreat,
+    topImage: topTripleThreat,
     isNew: true,
   },
   {
@@ -153,6 +178,7 @@ export const cookies: Cookie[] = [
     name: 'Kinder Era',
     description: 'Gooey Kinder filling, crunchy Kinder pieces and Kinder chocolate bites.',
     image: kinderEra,
+    topImage: topKinderEra,
     isNew: true,
   },
   {
@@ -160,6 +186,7 @@ export const cookies: Cookie[] = [
     name: 'Brownie x Nutella',
     description: 'Double chocolate chip dough stuffed with gooey Nutella and fudgy brownie.',
     image: brownieXNutella,
+    topImage: topBrownieXNutella,
     isNew: true,
   },
   {
@@ -167,6 +194,7 @@ export const cookies: Cookie[] = [
     name: 'Island Time',
     description: 'White chocolate chip dough with a crunchy coconut filling, mango and passion fruit.',
     image: islandTime,
+    topImage: topIslandTime,
     isNew: true,
   },
   {
@@ -174,6 +202,7 @@ export const cookies: Cookie[] = [
     name: 'Pretty in Pink',
     description: 'White chocolate chip dough with a creamy cheesecake filling and strawberry compote.',
     image: prettyInPink,
+    topImage: topPrettyInPink,
     isNew: true,
   },
   {
@@ -181,6 +210,7 @@ export const cookies: Cookie[] = [
     name: 'Jam Session',
     description: 'Milk chocolate chip dough with a peanut butter centre, topped with raspberry gel.',
     image: jamSession,
+    topImage: topJamSession,
     isNew: true,
   },
 ];
