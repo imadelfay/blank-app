@@ -37,6 +37,13 @@ import topBrownieXNutella from '../assets/cookies/top/brownie-x-nutella.jpg';
 import topIslandTime from '../assets/cookies/top/island-time.jpg';
 import topPrettyInPink from '../assets/cookies/top/pretty-in-pink.jpg';
 import topJamSession from '../assets/cookies/top/jam-session.jpg';
+import topKindOfNuts from '../assets/cookies/top/kind-of-nuts.jpg';
+import topTheBillionaire from '../assets/cookies/top/the-billionaire.jpg';
+import topBiscPlease from '../assets/cookies/top/bisc-please.jpg';
+import topTheGirlScout from '../assets/cookies/top/the-girl-scout.jpg';
+import topDeathByChocolate from '../assets/cookies/top/death-by-chocolate.jpg';
+import topElChapo from '../assets/cookies/top/el-chapo.jpg';
+import topMichellePfeiffer from '../assets/cookies/top/michelle-pfeiffer.jpg';
 
 export interface Cookie {
   slug: string;
@@ -66,18 +73,21 @@ export const cookies: Cookie[] = [
     name: 'Kind of Nuts',
     description: 'Chocolate chip with a molten Nutella centre and flaky sea salt.',
     image: kindOfNuts,
+    topImage: topKindOfNuts,
   },
   {
     slug: 'the-billionaire',
     name: 'The Billionaire',
     description: 'Filled with pistachio kunafa, topped with white chocolate and crushed pistachio.',
     image: theBillionaire,
+    topImage: topTheBillionaire,
   },
   {
     slug: 'bisc-please',
     name: 'Bisc, Please',
     description: 'Double chocolate with a Lotus Biscoff centre and biscuit crumble.',
     image: biscPlease,
+    topImage: topBiscPlease,
   },
   {
     slug: 'why-so-salty',
@@ -91,24 +101,28 @@ export const cookies: Cookie[] = [
     name: 'The Girl Scout',
     description: "S'mores: toasted marshmallow, melted chocolate and a chocolate square on top.",
     image: theGirlScout,
+    topImage: topTheGirlScout,
   },
   {
     slug: 'death-by-chocolate',
     name: 'Death by Chocolate',
     description: 'Double chocolate, marshmallow middle, buried in chocolate shavings.',
     image: deathByChocolate,
+    topImage: topDeathByChocolate,
   },
   {
     slug: 'el-chapo',
     name: 'El Chapo',
     description: 'Dark chocolate crinkle, dusted in sugar, milk chocolate inside.',
     image: elChapo,
+    topImage: topElChapo,
   },
   {
     slug: 'michelle-pfeiffer',
     name: 'Michelle Pfeiffer',
     description: 'Golden cookie loaded with white chocolate chunks.',
     image: michellePfeiffer,
+    topImage: topMichellePfeiffer,
   },
   {
     slug: 'creme-de-la-creme',
