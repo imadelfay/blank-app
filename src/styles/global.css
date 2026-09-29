@@ -1,18 +1,23 @@
 /*
- * Design tokens for the "Bold" direction. Placeholder brand colours until BATCH's palette is confirmed.
+ * Design tokens from the BATCH brand guidelines: yellow #FAF86E, white #FFFFFF, black #231F20.
  * Shape rule: containers (hero, cards, order panel) use --radius; interactive controls are pills.
  */
 :root {
   color-scheme: light dark;
 
-  --color-bg: #f4f3f1;
-  --color-text: #141416;
-  --color-muted: #5d5b61;
-  --color-accent: #2d46d6;
-  --color-on-accent: #ffffff;
-  /* Cookie cards keep light flavour tints in both themes, so their text stays dark. */
-  --color-card-text: #141416;
-  --color-card-muted: #55525a;
+  --brand-yellow: #faf86e;
+  --brand-black: #231f20;
+  --brand-white: #ffffff;
+
+  --color-bg: var(--brand-white);
+  --color-text: var(--brand-black);
+  --color-muted: #6b6567;
+  --color-card: #efeeec;
+  --color-accent: var(--brand-yellow);
+  --color-on-accent: var(--brand-black);
+  --color-cta: var(--brand-black);
+  --color-on-cta: var(--brand-yellow);
+  --color-focus: var(--brand-black);
 
   --font-sans: 'Bricolage Grotesque Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
@@ -25,11 +30,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #121214;
-    --color-text: #f2f1ee;
-    --color-muted: #a6a4ab;
-    --color-accent: #7d8fff;
-    --color-on-accent: #0f1030;
+    --color-bg: var(--brand-black);
+    --color-text: var(--brand-white);
+    --color-muted: #b8b2b4;
+    --color-card: #2f2a2b;
+    --color-cta: var(--brand-yellow);
+    --color-on-cta: var(--brand-black);
+    --color-focus: var(--brand-yellow);
   }
 }
 
@@ -105,13 +112,42 @@ p {
 
 .pill:focus-visible,
 a:focus-visible {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 
-.pill--accent {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
+.pill--cta {
+  background: var(--color-cta);
+  color: var(--color-on-cta);
+}
+
+::selection {
+  background: var(--brand-yellow);
+  color: var(--brand-black);
+}
+
+/* The BATCH wordmark, drawn from the logo file as a mask so it takes the current text colour. */
+.wordmark {
+  display: block;
+  aspect-ratio: 1200 / 293;
+  background: currentColor;
+  -webkit-mask: url('/brand/batch-wordmark.png') center / contain no-repeat;
+  mask: url('/brand/batch-wordmark.png') center / contain no-repeat;
+}
+
+.wordmark--edition {
+  aspect-ratio: 1200 / 285;
+  -webkit-mask-image: url('/brand/batch-wordmark-edition.png');
+  mask-image: url('/brand/batch-wordmark-edition.png');
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
