@@ -12,6 +12,17 @@ import { cookies } from '../data/cookies';
         <li class="card" id={c.slug}>
           <div class="card__photo">
             <Image src={c.image} alt={c.name} width={640} height={640} fit="cover" position="center" />
+            {c.topImage && (
+              <Image
+                class="card__top"
+                src={c.topImage}
+                alt=""
+                width={640}
+                height={640}
+                fit="cover"
+                position="center"
+              />
+            )}
             {c.isNew && <span class="card__new">New</span>}
           </div>
           <h3>{c.name}</h3>
@@ -74,6 +85,25 @@ import { cookies } from '../data/cookies';
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .card:hover .card__photo img {
       transform: scale(1.06);
+    }
+  }
+  /* The top-down shot sits over the broken one and fades out on hover or keyboard focus.
+     Touch screens have no hover, so they only ever see the broken, gooey shot. */
+  .card__photo .card__top {
+    display: none;
+  }
+  @media (hover: hover) {
+    .card__photo .card__top {
+      display: block;
+      position: absolute;
+      inset: 0;
+      transition:
+        opacity 300ms var(--ease-out),
+        transform 500ms var(--ease-out);
+    }
+    .card:hover .card__top,
+    .card:focus-within .card__top {
+      opacity: 0;
     }
   }
   .card__new {

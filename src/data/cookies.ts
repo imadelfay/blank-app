@@ -29,6 +29,8 @@ export interface Cookie {
   description: string;
   /** Portrait 1080x1920 shot with the product in the centred square, or a square shot. */
   image: ImageMetadata;
+  /** Optional top-down shot, shown first on hover-capable screens; hovering reveals `image`. */
+  topImage?: ImageMetadata;
   /** Recently added to the menu; shows a "New" tag on the card. */
   isNew?: boolean;
 }
