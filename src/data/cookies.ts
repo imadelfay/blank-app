@@ -10,16 +10,31 @@ import deathByChocolate from '../assets/cookies/death-by-chocolate.jpg';
 import theGirlScout from '../assets/cookies/the-girl-scout.jpg';
 import elChapo from '../assets/cookies/el-chapo.jpg';
 import cremeDeLaCreme from '../assets/cookies/creme-de-la-creme.jpg';
+import cakeByTheOcean from '../assets/cookies/cake-by-the-ocean.jpg';
+import churroPlease from '../assets/cookies/churro-please.jpg';
+import crumble from '../assets/cookies/crumble.jpg';
+import spreadableLove from '../assets/cookies/spreadable-love.jpg';
+import theBatman from '../assets/cookies/the-batman.jpg';
+import blackAndBougie from '../assets/cookies/black-and-bougie.jpg';
+import tripleThreat from '../assets/cookies/triple-threat.jpg';
+import kinderEra from '../assets/cookies/kinder-era.jpg';
+import brownieXNutella from '../assets/cookies/brownie-x-nutella.jpg';
+import islandTime from '../assets/cookies/island-time.jpg';
+import prettyInPink from '../assets/cookies/pretty-in-pink.jpg';
+import jamSession from '../assets/cookies/jam-session.jpg';
 
 export interface Cookie {
   slug: string;
   name: string;
   description: string;
-  /** Portrait 1080x1920 shot; the product sits in the centred square. */
+  /** Portrait 1080x1920 shot with the product in the centred square, or a square shot. */
   image: ImageMetadata;
+  /** Recently added to the menu; shows a "New" tag on the card. */
+  isNew?: boolean;
 }
 
-// Names come from the BATCH photo library. Descriptions are drafts written from the photos
+// Names come from the BATCH photo library and the Deliveroo menu; new-cookie descriptions are
+// based on the Deliveroo menu copy. Descriptions are drafts written from the photos
 // and the public menu: confirm them with the brand team before launch.
 export const cookies: Cookie[] = [
   {
@@ -81,5 +96,89 @@ export const cookies: Cookie[] = [
     name: 'Crème de la Crème',
     description: 'Crème brûlée on a cookie, with a torched, crackly sugar top.',
     image: cremeDeLaCreme,
+  },
+  {
+    slug: 'cake-by-the-ocean',
+    name: 'Cake by the Ocean',
+    description: 'Slow-baked cookie dough with a gooey Nutella filling and a sprinkle of sea salt.',
+    image: cakeByTheOcean,
+    isNew: true,
+  },
+  {
+    slug: 'churro-please',
+    name: 'Churro, Please',
+    description: 'Cinnamon-sugar cookie with a cheesecake centre and a coffee caramel drizzle.',
+    image: churroPlease,
+    isNew: true,
+  },
+  {
+    slug: 'crumble',
+    name: 'Crumble',
+    description: 'Soft cookie with a cheesecake filling under a buttery biscuit crumble.',
+    image: crumble,
+    isNew: true,
+  },
+  {
+    slug: 'spreadable-love',
+    name: 'Spreadable Love',
+    description: 'Thick, golden cookie with a molten Nutella centre and flaky sea salt.',
+    image: spreadableLove,
+    isNew: true,
+  },
+  {
+    slug: 'the-batman',
+    name: 'The Batman',
+    description: 'Half light, half dark: white and dark chocolate baked into one rich dough.',
+    image: theBatman,
+    isNew: true,
+  },
+  {
+    slug: 'black-and-bougie',
+    name: 'Black & Bougie',
+    description: 'Double chocolate dough, creamy milk chocolate chips and everything chocolate.',
+    image: blackAndBougie,
+    isNew: true,
+  },
+  {
+    slug: 'triple-threat',
+    name: 'Triple Threat',
+    description: 'Triple chocolate cookie with a peanut and chocolate filling.',
+    image: tripleThreat,
+    isNew: true,
+  },
+  {
+    slug: 'kinder-era',
+    name: 'Kinder Era',
+    description: 'Gooey Kinder filling, crunchy Kinder pieces and Kinder chocolate bites.',
+    image: kinderEra,
+    isNew: true,
+  },
+  {
+    slug: 'brownie-x-nutella',
+    name: 'Brownie x Nutella',
+    description: 'Double chocolate chip dough stuffed with gooey Nutella and fudgy brownie.',
+    image: brownieXNutella,
+    isNew: true,
+  },
+  {
+    slug: 'island-time',
+    name: 'Island Time',
+    description: 'White chocolate chip dough with a crunchy coconut filling, mango and passion fruit.',
+    image: islandTime,
+    isNew: true,
+  },
+  {
+    slug: 'pretty-in-pink',
+    name: 'Pretty in Pink',
+    description: 'White chocolate chip dough with a creamy cheesecake filling and strawberry compote.',
+    image: prettyInPink,
+    isNew: true,
+  },
+  {
+    slug: 'jam-session',
+    name: 'Jam Session',
+    description: 'Milk chocolate chip dough with a peanut butter centre, topped with raspberry gel.',
+    image: jamSession,
+    isNew: true,
   },
 ];
