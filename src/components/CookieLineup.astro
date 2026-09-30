@@ -5,13 +5,25 @@ import { cookies } from '../data/cookies';
 
 <section id="cookies" class="lineup">
   <h2>The lineup</h2>
-  <p class="lineup__intro">Ten flavours, baked fresh every day. Pick your favourite.</p>
+  <p class="lineup__intro">{cookies.length} flavours, baked fresh every day. Pick your favourite.</p>
   <ul class="grid" role="list">
     {
       cookies.map((c) => (
         <li class="card" id={c.slug}>
           <div class="card__photo">
             <Image src={c.image} alt={c.name} width={640} height={640} fit="cover" position="center" />
+            {c.topImage && (
+              <Image
+                class="card__top"
+                src={c.topImage}
+                alt=""
+                width={640}
+                height={640}
+                fit="cover"
+                position="center"
+              />
+            )}
+            {c.isNew && <span class="card__new">New</span>}
           </div>
           <h3>{c.name}</h3>
           <p>{c.description}</p>
@@ -33,15 +45,21 @@ import { cookies } from '../data/cookies';
     font-size: 1.1875rem;
     color: var(--color-muted);
   }
+  /* Flex rather than grid so an incomplete last row sits centred. */
   .grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: clamp(12px, 1.5vw, 20px);
+    --cols: 5;
+    --gap: clamp(12px, 1.5vw, 20px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--gap);
     margin: 3rem 0 0;
     padding: 0;
     list-style: none;
   }
   .card {
+    flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+    min-width: 0;
     scroll-margin-top: calc(var(--header-height) + 16px);
     padding: 12px 12px 22px;
     border-radius: var(--radius);
@@ -53,6 +71,7 @@ import { cookies } from '../data/cookies';
     outline-offset: 4px;
   }
   .card__photo {
+    position: relative;
     aspect-ratio: 1;
     border-radius: calc(var(--radius) - 10px);
     overflow: hidden;
@@ -68,6 +87,37 @@ import { cookies } from '../data/cookies';
       transform: scale(1.06);
     }
   }
+  /* The top-down shot sits over the broken one and fades out on hover or keyboard focus.
+     Touch screens have no hover, so they only ever see the broken, gooey shot. */
+  .card__photo .card__top {
+    display: none;
+  }
+  @media (hover: hover) {
+    .card__photo .card__top {
+      display: block;
+      position: absolute;
+      inset: 0;
+      transition:
+        opacity 300ms var(--ease-out),
+        transform 500ms var(--ease-out);
+    }
+    .card:hover .card__top,
+    .card:focus-within .card__top {
+      opacity: 0;
+    }
+  }
+  .card__new {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--brand-yellow);
+    color: var(--brand-black);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
   h3 {
     margin: 1rem 0.5rem 0;
     font-size: 1.375rem;
@@ -80,12 +130,12 @@ import { cookies } from '../data/cookies';
   }
   @media (max-width: 1100px) {
     .grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      --cols: 3;
     }
   }
   @media (max-width: 760px) {
     .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      --cols: 2;
     }
     h3 {
       font-size: 1.125rem;

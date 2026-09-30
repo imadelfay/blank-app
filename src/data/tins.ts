@@ -1,7 +1,7 @@
 import type { ImageMetadata } from 'astro';
 
 import ogTin from '../assets/tins/og-tin-scoop.jpg';
-import doubleDecadenceTin from '../assets/tins/lotus-tin-scoop.jpg';
+import chocolotusTin from '../assets/tins/lotus-tin-scoop.jpg';
 import nutellaTin from '../assets/tins/nutella-tin-scoop.jpg';
 
 export interface Tin {
@@ -12,25 +12,24 @@ export interface Tin {
   image: ImageMetadata;
 }
 
-// Names follow the BATCH tin photo files; Double Decadence is assumed to be the chocolate + Lotus tin.
-// Descriptions are drafts: confirm both with the brand team before launch.
+// Names and descriptions follow the Deliveroo menu (The Scoopable ... Tin).
 export const tins: Tin[] = [
   {
     slug: 'the-og-tin',
     name: 'The OG',
-    description: 'Our classic chocolate chip, baked soft in the tin with a molten chocolate centre.',
+    description: 'Oven-baked cookie dough, served hot in the tin with a rich dark chocolate centre.',
     image: ogTin,
   },
   {
-    slug: 'double-decadence-tin',
-    name: 'Double Decadence',
-    description: 'Dark chocolate cookie dough with a gooey Lotus Biscoff heart. Bisc, Please in tin form.',
-    image: doubleDecadenceTin,
+    slug: 'chocolotus-tin',
+    name: 'Chocolotus',
+    description: 'Double chocolate cookie dough, served hot in the tin with a Lotus spread centre.',
+    image: chocolotusTin,
   },
   {
     slug: 'nutella-dream-tin',
     name: 'Nutella Dream',
-    description: 'Golden cookie dough, flowing Nutella and a pinch of sea salt on top.',
+    description: 'Oven-baked cookie dough, served hot in the tin with a molten Nutella centre.',
     image: nutellaTin,
   },
 ];
